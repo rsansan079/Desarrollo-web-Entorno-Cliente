@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<script>
+function sueldoSuma() {
+var sueldo = prompt("Introduzca un sueldo :","");
+var antiguedad = prompt("Introduzca una antiguedad :","");
+var sueldo2 = parseInt(sueldo);
+var antiguedad2 = parseInt(antiguedad);
+
+
+if(sueldo2 < 750 && antiguedad2 >= 10){
+    var salarioFinal = sueldo2 + sueldo2*0.1;
+    alert("Su salario es "+ salarioFinal)
+}else if (sueldo2 >= 750 && antiguedad2 >= 10){
+    var salarioFinal = sueldo2 + sueldo2*0.05;
+    alert("Su salario es "+ salarioFinal)
+}else if( antiguedad2 < 10){
+    var salarioFinal = sueldo2;
+    alert("Su salario es "+ salarioFinal)
+}
+}
+</script>
+    </head>
+    <body onload="sueldoSuma()">
+</body>
+</html>
