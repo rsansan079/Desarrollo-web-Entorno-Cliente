@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<script>
+function factorial() {
+    var mensaje;
+// Ponemos el mensaje principal
+var num = prompt("Introduzca un numero :");
+var fact = parseInt(num);
+var sol = 1;
+
+
+do{
+    // El calc es el numero introducido por 1
+    var calc = fact * 1;
+    // La solucion se convierte en el calculo por la sol
+    //que al ir restando el fact se va multiplicando por 1-
+    sol=calc *sol;
+    fact--;
+
+}while(fact>0);
+
+alert(sol)
+}
+</script>
+    </head>
+    <body onload="factorial()">
+</body>
+</html>

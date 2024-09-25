@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<script>
+function factorial() {
+    var mensaje;
+// Ponemos el mensaje principal
+var a = prompt("Introduzca un numero :");
+var prim = 2;
+var result="";
+var primero =true;
+
+var num = parseInt(a);
+var primo = parseInt(prim);
+
+do{
+//Si el resto es distinto de 0 , "primo" se suma(pasa a ser el 3)
+    if((num % primo)!=0){
+
+        primo++;
+        }else{
+//Si el resto es 0 , el numero se divide entre la variable prim
+             num = num/primo;
+//Para evitar asterisco al principio , creamos "primero",que produce el resultado sin *
+                if(primero){
+
+            result=result+primo;
+            primero=false;
+                }else{
+//Si ya no  es el primer numero , se introduce el asterisco.
+                    result=result+" * "+primo;
+    
+                }
+
+        }
+//Finaliza cuando el dividendo es 1 , ya que solo se convierte en divisible por 1 y seria un bucle infinito.
+    }while(num>1);
+alert(result);
+
+
+
+
+}
+</script>
+    </head>
+    <body onload="factorial()">
+</body>
+</html>
