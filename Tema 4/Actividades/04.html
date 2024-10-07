@@ -25,24 +25,25 @@
             } while (fuera === false)
             alert(media(numeros));
             alert(rango(numeros));
+            alert(moda(numeros));
         }
 
 
         function rango(numeros) {
 
-            var numMin= Number(numeros[0]);
-            var numMax= Number(numeros[0]);
+            var numMin = Number(numeros[0]);
+            var numMax = Number(numeros[0]);
 
 
-            for(var i=1; i<numeros.length; i++){
-                if(numeros[i]>numMax){
-                numMax=numeros[i];
-                }else if(numeros[i]<numMin){
+            for (var i = 1; i < numeros.length; i++) {
+                if (numeros[i] > numMax) {
+                    numMax = numeros[i];
+                } else if (numeros[i] < numMin) {
 
-                numMin=numMin[i];
+                    numMin = numeros[i];
                 }
             }
-                return "El rango es :" + (numMax - numMin);
+            return "El rango es :" + (numMax - numMin);
         }
 
         function media(numeros) {
@@ -53,10 +54,66 @@
             alert("la media es " + (suma / numeros.length));
 
         }
+
         function moda(numeros) {
+            var contador = []; // Array para almacenar numeros repetidos
+            
+            // Contamos las veces que se repite cada número
+            for (var i = 0; i < numeros.length; i++) {
+                var encontrado = false;
+                for (var j = 0; j < contador.length; j++) {
+                    if (contador[j][0] == numeros[i]) {
+                        contador[j][1]++; // Incrementar contador si el número ya está
+                        encontrado = true;
+                        break;
+                    }
+                }
+                if (!encontrado) {
+                    contador.push([numeros[i], 1]); // Si es nuevo el nu,ero, añadir con contador 1
+                }
+            }
 
+            // Encontrar el número con la mayor frecuencia
+            var maxFrecuencia = 0;
+            for (var i = 0; i < contador.length; i++) {
+                if (contador[i][1] > maxFrecuencia) {
+                    maxFrecuencia = contador[i][1];
+                }
+            }
 
+            // Verificar si todos los números aparecen mismas veces vez (no hay moda)
+            var mismaFrecuencia = true;
+            for (var i = 0; i < contador.length; i++) {
+                if (contador[i][1] !== maxFrecuencia) {
+                    mismaFrecuencia = false;
+                    break;
+                }
+                alert("No hay moda");
+                return;
+            }
+
+            // Almacenar todos los números que tienen la frecuencia máxima
+            var modas = [];
+            for (var i = 0; i < contador.length; i++) {
+                if (contador[i][1] === maxFrecuencia) {
+                    modas.push(contador[i][0]);
+                }
+            }
+
+            // Mostrar las modas o calcular 
+            if (modas.length === 1) {
+                alert("La moda de los números es: " + modas[0] + " y sale " + maxFrecuencia + " veces.");
+            } else {
+                // Si hay más de una moda, calcular la división entre la frecuencia y sumamos
+                var suma = 0;
+                for (var i = 0; i < modas.length; i++) {
+                    suma += modas[i] / maxFrecuencia;
+                }
+                alert("Los números que se repiten son: " + modas.join(" , ") + " y el calculo de los resultados es: " + suma);
+            }
         }
+
+
     </script>
 </head>
 
