@@ -23,28 +23,46 @@
                     }
                 }
             } while (fuera === false)
-        
-        
-        
+            alert(calculoMediana(numeros));
+
+        }
+
+
+        function calculoMediana(numeros) {
+            // Elije los valores intermedios
+            var medio = Math.floor(numeros.length / 2);
+            var medio2 = Math.floor(numeros.length/2-1);
+
+            //Ordenamos los valores del array
+            numeros.sort(function (a, b) { return a - b });
+            var par="";
+
+
+            
+            if (numeros.length % 2 === 0) {
+                par = true;
+            } else if (numeros.length % 2 !== 0) {
+                par = false;
+            }
+
+            if (par == false){
+                alert("La mediana es " + numeros[medio]);
+
+        }else if(par == true) {
+            var calculo = (numeros[medio]+numeros[medio2])/2;
+            alert ("La mediana es "+calculo)
+
+
         }
 
 
 
 
+    }
+        
 
 
-
-
-
-
-
-
-
-
-
-
-
-</script>
+    </script>
 </head>
 
 <body onload="menu()">
