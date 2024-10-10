@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function menu() {
+            var numeros = [];
+            var fuera = false;
+
+            do {
+
+                var variables = prompt("Introduce los numeros (x para salir)");
+
+                if (variables === "x") {
+                    fuera = true;
+                    break;
+                } else {
+                    var valores = parseInt(variables);
+                    if (Number.isInteger(valores) && valores >= 0) {
+                        numeros.push(valores);
+                    } else {
+                        alert("Introduzca un numero correcto")
+                    }
+                }
+            } while (fuera === false)
+        
+        
+        
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</head>
+
+<body onload="menu()">
+</body>
+
+</html>

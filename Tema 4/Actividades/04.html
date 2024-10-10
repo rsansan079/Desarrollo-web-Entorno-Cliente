@@ -57,7 +57,7 @@
 
         function moda(numeros) {
             var contador = []; // Array para almacenar numeros repetidos
-            
+
             // Contamos las veces que se repite cada número
             for (var i = 0; i < numeros.length; i++) {
                 var encontrado = false;
@@ -88,6 +88,9 @@
                     mismaFrecuencia = false;
                     break;
                 }
+            }
+
+            if (mismaFrecuencia) {
                 alert("No hay moda");
                 return;
             }
