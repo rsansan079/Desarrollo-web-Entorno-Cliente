@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+      function menu() {
+            //array bidimensional
+            var matriz = [];
+            //array fila
+            var fila = [];
+            
+            var introducir= '';
+
+            while (introducir != null) {
+                introducir = prompt(
+                    "Introduce los elementos del array"+  "\n " +"Para terminar , introduzca 'x'" +"\n" + "Para parar de añadir filas pulse 'p'"
+                );
+
+                if (introducir === null) {
+                    alert("Has finalizado el programa");
+                } else if (introducir === "x") {
+                    // datos de la fila al array 
+                    matriz.push(fila);
+                    // Reiniciamos la variable para empezar una nueva fila
+                    fila = [];
+                } else if (introducir === "p") {
+                    // se agrega a la fila si no está vacía
+                    if (fila.length > 0) {
+                        matriz.push(fila);
+                    }
+
+                    // Convertimos la matriz en array unidimensional y llamamos a la función parImpar
+                    var numeros = matrizPasaArray(matriz);
+                    parImpar(numeros);
+                    break; // Salimos del bucle al finalizar
+                } else {
+                    fila.push(Number(introducir));
+                }
+            }
+        }
+
+        function matrizPasaArray(matriz) {
+            // array unidimensional
+            var numeros = [];
+            
+            // accede a cada fila
+            for (var i = 0; i < matriz.length; i++) {
+                // accede a cada columna
+                for (var j = 0; j < matriz[i].length; j++) {
+                    // agregamos cada valor al array unidimensional
+                    numeros.push(matriz[i][j]);
+                }
+            }
+            
+            return numeros;
+        }
+
+        function parImpar(numeros) {
+            var par = [];
+            var impar = [];
+
+            for (var i = 0; i < numeros.length; i++) {
+                if (numeros[i] % 2 == 0) {
+                    par.push(numeros[i]);
+                } else {
+                    impar.push(numeros[i]);
+                }
+            }
+
+            alert("Los números pares son: " + par.join(', ') + "\n" + "Los números impares son: " + impar.join(', '));
+        }
+    </script>
+</head>
+
+<body onload="menu()">
+</body>
+
+</html>
