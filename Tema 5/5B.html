@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function menu() {
+
+
+            let introducir = prompt("1. Ver cesta" + "\n" + "2.Insertar artículo" + "\n" + "3. Borrar artículo" + "\n" + "4.Vaciar cesta" + "\n" + "5.Salir");
+            switch (introducir) {
+
+
+                case 1:
+                    verCesta();
+                    break;
+
+
+
+                case 2:
+                    insertarArticulo();
+                    break;
+
+
+                case 3:
+                    borrarArticulo();
+                    break;
+
+
+                case 4:
+                    vaciarCesta();
+                    break;
+
+
+
+
+                case 5:
+                    salir();
+                    break;
+
+
+
+
+
+
+
+            }
+
+        }
+        function verCesta() {
+
+            var cosas = prompt("Ver articulo: " + "\n"+articulos);
+            
+
+        }
+
+        function insertarArticulo() {
+
+
+            let articulos = {
+                Cod : "",
+                Nombre : "",
+                Precio : "",
+                Cantidad : "",
+                Subtotal : (Precio*Cantidad),
+
+            };
+
+            var entrada = prompt("Introduce el nuevo articulo :")
+
+
+        }
+
+        function borrarArticulo() {
+
+        }
+
+        function vaciarCesta() {
+
+        }
+
+        function salir() {
+
+        }
+
+
+
+    </script>
+</head>
+
+<body onload="menu()">
+</body>
+
+</html>

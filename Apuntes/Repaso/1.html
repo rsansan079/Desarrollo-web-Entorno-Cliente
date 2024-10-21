@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <script>
+      function entrada() {
+        // Declaro el array bidimensional
+        var dependencias = [];
+        // Declaro el array vacío que actuará como zona
+        var consumos = [];
+        // Declaro el valor de entrada
+        var entrada = String;
+        var indiceDependencia = 0;
+
+        while (entrada != null) {
+          entrada = prompt(
+            "Introduce los valores de consumo de la dependencia " +
+              indiceDependencia +
+              "  \nPara pasar a la siguiente dependencia, introduzca c \nPara separar entre pares e impares pulse f"
+          );
+
+          if (entrada == null) {
+            alert("Has finalizado el programa");
+          } else if (entrada == "c") {
+            // Mandamos los datos de la zona al array bidimensional
+            consumos.sort(function (a,b){return a-b}) ;
+            dependencias.push(consumos);
+            indiceDependencia = indiceDependencia + 1;
+            
+            // Reiniciamos la variable para empezar una nueva zona
+            var consumos = [];
+          } else if (entrada == "f") {
+            consumos.sort(function (a,b){return a-b}) ;
+            dependencias.push(consumos);
+            // Separar los números pares de los impares
+            maximo(dependencias);
+            mayorQueDos(dependencias);
+
+            break;
+          } else {
+            consumos.push(entrada);
+          }
+        }
+      }
+
+      function maximo(array) {
+        var max = Number(array[0][0]);
+        var maximos = [];
+
+        for (var i = 0; i < array.length; i++) {
+          for (var j = 0; j < array[i].length; j++) {
+            if (Number(array[i][j]) > max) {
+              max = Number(array[i][j]);
+            }
+          }
+          var maxMensaje = "Dependencia " + i + ": " + max + " kWh"; 
+          maximos.push(maxMensaje);
+          max = Number(array[0][0]);
+        }
+        
+          alert("Los máximos son: " + maximos);
+      }
+
+      function mayorQueDos(array){
+        var mayores = [];
+
+        for (var i = 0; i < array.length; i++) {
+          for (var j = 0; j < array[i].length; j++) {
+            if (Number(array[i][j]) > 2) {
+              mayor = "Dependencia " + i;
+            }else{
+                mayor = "";
+            }
+          }
+          mayores.push(mayor);
+        }
+
+        alert("Las dependencias con consumos mayores a 2kWh son: " + mayores);
+
+      }
+    </script>
+  </head>
+  <body onload="entrada();"></body>
+</html>

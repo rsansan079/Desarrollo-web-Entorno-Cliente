@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function menu() {
+            //array bidimensional
+            var matriz = [];
+            //array criterios
+            var criterio = [];
+
+            var introducir = '';
+
+            while (introducir != null) {
+                introducir = prompt(
+                    "Introduce las notas del criterio " + "\n " + "Para terminar , introduzca 'f'" + "\n" + "Para parar de añadir notas pulse 's'"
+                );
+
+                if (introducir === "s") {
+                    // datos de la fila al array 
+                    matriz.push(criterio);
+                    // Reiniciamos la variable para empezar una nueva fila
+                    criterio = [];
+                } else if (introducir === "f") {
+                   if(criterio.length >0){
+                    matriz.push(criterio);
+                   }
+                    // Convertimos la matriz en array unidimensional y llamamos a la función mediaNotas
+                    var medias = mediaNotas(matriz);
+                    break; // Salimos del bucle al finalizar
+                } else {
+                    criterio.push(Number(introducir));
+                }
+            }
+        }
+
+
+        function mediaNotas(matriz) {
+            // array unidimensional
+            var medias = [];
+            calculo = 0;
+            // accede a cada criterio
+            for (var i = 0; i < matriz.length; i++) {
+                // accede a cada columna
+                for (var j = 0; j < matriz[i].length; j++) {
+                    // agregamos cada valor al array unidimensional
+                    medias.push(matriz[i][j]);
+                }
+            }
+
+                    //Accedemos a cada nota del array de meidas 
+                    for (var x = 0; x < medias.length; x++) {
+                        //Se suman las notas que hay en las medias
+                        calculo += medias[x];
+                    }
+                    //Se hace el calculo
+                    alert("la media del criterio " + j + " es "(calculo) / medias.length);
+
+                    //Reiniciamos para que pase al siguiente criterio
+                    medias = [];
+
+                
+            
+
+            return medias;
+        
+            }
+
+    </script>
+</head>
+
+<body onload="menu()">
+</body>
+
+</html>
