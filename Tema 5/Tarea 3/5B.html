@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+
+
+
+        function menu() {
+
+            let cesta = [];
+            let codigoObj = 1;
+                do{
+             introducir = prompt("1. Ver cesta" + "\n" + "2.Insertar artículo" + "\n" + "3. Borrar artículo" + "\n" + "4.Vaciar cesta" + "\n" + "5.Salir");
+            switch (introducir) {
+
+
+                case '1':
+                    verCesta(cesta);
+                    break;
+
+
+
+                case '2':
+                    insertarArticulo(cesta , codigoObj);
+                    codigoObj ++ ;
+                    break;
+
+
+                case '3':
+                    borrarArticulo(cesta , codigoObj);
+                    break;
+
+
+                case '4':
+                    cesta = []
+                    alert("Cesta eliminada");
+                    break;
+
+
+
+
+                case '5':
+                    alert("Saliendo del programa")
+                    break;
+
+            }
+
+        }while (introducir != '5');
+    }
+        function verCesta(cesta ) {
+
+
+            if(cesta.lenght === "0"){
+                alert("no hay nada en la  cesta ");
+                return;
+            }
+            
+            let mensaje = "Cesta \n   Codigo         Nombre         Precio         Cantidad         Subtotal \n";
+            let total = 0;
+            cesta.forEach(articulos => {
+                mensaje +="     " +articulos.codigo+ "                 "+articulos.nombre+
+                    "                     "+articulos.precio + "                  "+articulos.cantidad+ "                  "+(Number(articulos.precio)*Number(articulos.cantidad)+"\n")
+                    total += articulos.precio * articulos.cantidad;
+             }); 
+                mensaje += " Total "+ total +" €";
+                alert (mensaje);
+        }
+        
+
+        function insertarArticulo(cesta , codigoObj) {
+
+            var nombre = prompt("Introduce el nombre ");
+
+            var precio = prompt("Introduce el precio");
+
+            var cantidad = prompt("Introduce la cantidad");
+
+            var codigo = codigoObj;
+
+            var articulos = {codigo , nombre , precio , cantidad};
+                cesta.push(articulos);
+            alert("Introducido correctamente");
+
+
+        }
+
+        function borrarArticulo(cesta , codigoObj) {
+
+            let indice = parseInt(prompt("Introduce el codigo del articulo:"));
+            let num = cesta.findIndex(articulos => articulos.codigo === indice);
+
+
+            if(num !== -1){
+            cesta.splice(num, 1);
+                alert("Articulo borrado");
+        }else{
+            alert("No encontrado")
+
+        }
+        }
+
+       
+
+
+
+
+
+    </script>
+</head>
+
+<body onload="menu( )">
+</body>
+
+</html>
