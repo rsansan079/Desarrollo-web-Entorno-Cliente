@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function fecha(){
+           document.getElementById("pFecha").innerHTML = Date(); 
+        }
+        function f1(){
+          var btn=document.getElementById("bot");
+          btn.onclick=fecha;
+  
+          btn.onclick=''; //Eliminar evento.
+        }
+       // window.onload=f1;
+       f1();
+    </script>
+</head>
+
+<body>
+  <button id="bot">Ver fecha y hora</button>
+  <p id="pFecha"></p> 
+  
+</body>
+</html>

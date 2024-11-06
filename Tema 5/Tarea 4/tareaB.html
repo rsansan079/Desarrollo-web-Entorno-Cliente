@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        class Articulo {
+
+            #art={};
+            codigo;
+            nombre;
+            precio;
+            cantidad;
+            constructor(codigo, nombre, precio, cantidad) {
+
+                this.#art.codigo = codigo;
+                this.#art.nombre = nombre;
+                this.#art.precio = parseFloat(precio);
+                this.#art.cantidad = parseInt(cantidad);
+                return this.#art; 
+            }
+        }
+
+        class Cesta {
+            constructor() {
+                this.cesta = [];
+                this.codigoObj = 1;
+            }
+
+            verCesta() {
+
+                if (this.cesta.length === 0) {
+                    alert("No hay nada en la cesta");
+                    return;
+                }
+                 
+            
+
+                let mensaje = "Cesta\n   Codigo         Nombre         Precio         Cantidad         Subtotal\n";
+                let total = 0;
+                this.cesta.forEach(articulo => {
+                    let  subtotal = articulo.precio * articulo.cantidad;
+
+                    mensaje +=      articulo.codigo+"               "+articulo.nombre+"                    "+articulo.precio+"                  "+articulo.cantidad+"                  "+subtotal+"\n";
+                    total += subtotal;
+                });
+                mensaje += "Total: " + total + " €";
+                alert(mensaje);
+            }
+
+            insertarArticulo() {
+                let nombre = prompt("Introduce el nombre:");
+                let precio = prompt("Introduce el precio:");
+                let cantidad = prompt("Introduce la cantidad:");
+
+                let articulo = new Articulo(this.codigoObj, nombre, precio, cantidad);
+                this.cesta.push(articulo);
+                this.codigoObj++;
+
+                alert("Artículo introducido correctamente.");
+            }
+
+            borrarArticulo() {
+                let codigo = parseInt(prompt("Introduce el código del artículo:"));
+                let indice = this.cesta.findIndex(articulo => articulo.codigo === codigo);
+
+                if (indice !== -1) {
+                    this.cesta.splice(indice, 1);
+                    alert("Artículo borrado.");
+                } else {
+                    alert("Artículo no encontrado.");
+                }
+            }
+
+            vaciarCesta() {
+                this.cesta = [];
+                alert("Cesta vaciada.");
+            }
+        }
+
+        let cesta = new Cesta();
+
+        
+        let opcion;
+
+        do {
+            opcion = prompt("1. Ver cesta\n2. Insertar artículo\n3. Borrar artículo\n4. Vaciar cesta\n5. Salir");
+
+            switch (opcion) {
+                case '1':
+                    cesta.verCesta();
+                    break;
+                case '2':
+                    cesta.insertarArticulo();
+                    break;
+                case '3':
+                    cesta.borrarArticulo();
+                    break;
+                case '4':
+                    cesta.vaciarCesta();
+                    break;
+                case '5':
+                    alert("Saliendo del programa");
+                    break;
+                default:
+                    alert("Opción no válida.");
+            }
+        } while (opcion !== '5');
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

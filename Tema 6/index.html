@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" >
+    <script>  
+        function valida (e) {    
+           var nombre=document.forms["form1"]["nombre"].value;
+           var edad = document.forms["form1"].edad.value; // ó como sigue …
+           var edad = document.getElementById("edad1").value;
+           if (nombre=="" || edad=="") {
+           alert ("Rellenar campo...");
+           e.preventDefault(); // Interrumpe la llamada al archivo al que apunta 
+                                // el formulario con 'action'.
+           }
+        }
+        function fEvento( ) {
+           var formu=document.getElementById("f1");
+           formu.addEventListener('submit',valida);    
+        }
+        window.onload=fEvento; // Necesario esperar que se carguen los elementos HTML
+      </script>
+</head>
+<body>
+    <form id="f1" name="form1" action="index.html"  method="get">
+        <p>Su nombre: <input type="text" name="nombre" /></p>
+        <p>Su edad: <input id="edad1" type="text" name="edad" /></p>
+        <p><input type="submit" /></p>
+    </form>
+</body>
+</html>

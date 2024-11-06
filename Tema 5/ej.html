@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function menu() {
+
+            class Coche {
+     #marca; //Variable privada
+     #modelo;
+    constructor(marca,modelo){    
+       this.#marca=marca;
+       this.#modelo=modelo;
+       
+     }
+     nombre ( ) {return this.#marca+" "+this.#modelo}; //Privado
+   
+ }
+class CocheFurgoneta extends Coche {
+    #volumen;
+    constructor(marca,modelo,volumen){
+        super(marca,modelo) ;
+        this.#volumen=volumen;   
+     }
+     getVolumen () {return this.#volumen};
+ }
+ var coche1= new CocheFurgoneta ("Renault","Express",3);
+ alert(coche1.nombre()+" con volumen "+coche1.getVolumen()+"m3");
+
+
+        }
+    </script>
+</head>
+
+<body onload="menu( )">
+</body>
+
+</html>
