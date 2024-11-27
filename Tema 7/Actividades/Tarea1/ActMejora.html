@@ -172,10 +172,11 @@
             }
 
             eliminarProducto(id) {
-                this.#productosCesta = this.#productosCesta.filter(p => p.id !== id);
+                this.#productosCesta = this.#productosCesta.findIndex(p => p.id !== id);
                 this.actualizarCesta();
             }
-            renderizarCesta() {
+
+            calcularTotales() {
                 // Calcula los totales y renderiza la cesta
 
                 let total = 0;
@@ -187,20 +188,13 @@
                         const subtotal = producto.precio * cantidad;
                         total += subtotal;
 
-
-                        // Fila de producto en la cesta
-
-                        const fila = document.createElement('tr');
-                        fila.innerHTML = `
-                <td>${id}</td>
-                <td>${producto.nombre}</td>
-                <td>${cantidad}</td>
-                <td>${subtotal.toFixed(2)} €</td>
-                <td><button class="btn btn-danger btn-sm" onclick="app.cesta.eliminarProducto('${id}')">Eliminar</button></td>
-            `;
-                        contenedor.appendChild(fila);
                     }
                 });
+
+
+
+
+
 
                 // Calcula totales con y sin IVA
 
@@ -211,9 +205,43 @@
             }
 
             actualizarCesta() {
-                this.renderizarCesta();
+                this.Cesta.crearFila();
+                this.calcularTotales();
             }
         }
+
+
+    
+        class Fila {
+
+            fila = [];
+
+            constructor() {
+
+                this.fila = fila;
+            }
+
+            crearFila() {
+                // Fila de producto en la cesta
+
+                const contenedor = document.getElementById('cesta');
+                contenedor.innerHTML = '';
+
+                fila = document.createElement('tr');
+                fila.innerHTML = `
+                <td>${id}</td>
+                <td>${producto.nombre}</td>
+                <td>${cantidad}</td>
+                <td>${calcularTotales.subtotal.toFixed(2)} €</td>
+                <td><button class="btn btn-danger btn-sm" onclick="app.cesta.eliminarProducto('${id}')">Eliminar</button></td>
+            `;
+                calcularTotales.contenedor.appendChild(fila);
+
+
+
+            }
+        }
+
 
 
         class App {
@@ -231,14 +259,11 @@
                 this.contProductos = new ContProductos(arrayProductos);
                 this.cesta = new Cesta();
                 // Renderiza los productos en la página
-
                 this.contProductos.renderizarProductos();
+                
 
             }
         }
-
-
-    
 
 
         const app = new App();
