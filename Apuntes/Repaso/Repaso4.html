@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Gestión de Alumnos</title>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1>Gestión de Alumnos</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <form id="form-alumnos">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre:</label>
+                        <input type="text" id="nombre" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edad" class="form-label">Edad:</label>
+                        <input type="number" id="edad" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nota1" class="form-label">Nota 1:</label>
+                        <input type="number" id="nota1" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nota2" class="form-label">Nota 2:</label>
+                        <input type="number" id="nota2" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nota3" class="form-label">Nota 3:</label>
+                        <input type="number" id="nota3" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar Alumno</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Alumnos Registrados</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Edad</th>
+                            <th>Promedio</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-alumnos"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Alumno {
+            constructor(nombre, edad, nota1, nota2, nota3) {
+                this.id = Alumno.incrementId();
+                this.nombre = nombre;
+                this.edad = edad;
+                this.notas = [nota1, nota2, nota3];
+                this.promedio = this.calcularPromedio();
+            }
+
+            calcularPromedio() {
+                return this.notas.reduce((a, b) => a + b, 0) / this.notas.length;
+            }
+
+            static incrementId() {
+                if (!this.currentId) this.currentId = 1;
+                else this.currentId++;
+                return this.currentId;
+            }
+        }
+
+        class App {
+            #alumnos = [];
+
+            constructor() {
+                this.recuperarEstado();
+                this.configurarEventos();
+                this.renderizarTabla();
+            }
+
+            configurarEventos() {
+                document.getElementById('form-alumnos').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.registrarAlumno();
+                });
+            }
+
+            registrarAlumno() {
+                const nombre = document.getElementById('nombre').value;
+                const edad = parseInt(document.getElementById('edad').value);
+                const nota1 = parseFloat(document.getElementById('nota1').value);
+                const nota2 = parseFloat(document.getElementById('nota2').value);
+                const nota3 = parseFloat(document.getElementById('nota3').value);
+
+                const nuevoAlumno = new Alumno(nombre, edad, nota1, nota2, nota3);
+                this.#alumnos.push(nuevoAlumno);
+
+                this.guardarEstado();
+                this.renderizarTabla();
+            }
+
+            eliminarAlumno(id) {
+                this.#alumnos = this.#alumnos.filter(alumno => alumno.id !== id);
+                this.guardarEstado();
+                this.renderizarTabla();
+            }
+
+            guardarEstado() {
+                localStorage.setItem('alumnos', JSON.stringify(this.#alumnos));
+            }
+
+            recuperarEstado() {
+                const datosGuardados = localStorage.getItem('alumnos');
+                if (datosGuardados) {
+                    this.#alumnos = JSON.parse(datosGuardados).map(alumno =>
+                        new Alumno(alumno.nombre, alumno.edad, ...alumno.notas)
+                    );
+                }
+            }
+
+            renderizarTabla() {
+                const tabla = document.getElementById('tabla-alumnos');
+                tabla.textContent = ''; // Limpia la tabla
+
+                this.#alumnos.forEach(({ id, nombre, edad, promedio }) => {
+                    const fila = document.createElement('tr');
+
+                    const celdaId = document.createElement('td');
+                    celdaId.textContent = id;
+
+                    const celdaNombre = document.createElement('td');
+                    celdaNombre.textContent = nombre;
+
+                    const celdaEdad = document.createElement('td');
+                    celdaEdad.textContent = edad;
+
+                    const celdaPromedio = document.createElement('td');
+                    celdaPromedio.textContent = promedio.toFixed(2);
+
+                    const celdaEliminar = document.createElement('td');
+                    const btnEliminar = document.createElement('button');
+                    btnEliminar.textContent = 'Eliminar';
+                    btnEliminar.className = 'btn btn-danger btn-sm';
+                    btnEliminar.addEventListener('click', () => this.eliminarAlumno(id));
+                    celdaEliminar.appendChild(btnEliminar);
+
+                    fila.appendChild(celdaId);
+                    fila.appendChild(celdaNombre);
+                    fila.appendChild(celdaEdad);
+                    fila.appendChild(celdaPromedio);
+                    fila.appendChild(celdaEliminar);
+
+                    tabla.appendChild(fila);
+                });
+            }
+        }
+
+        const app = new App();
+    </script>
+</body>
+
+</html>
