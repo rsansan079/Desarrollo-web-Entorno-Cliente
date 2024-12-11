@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <cine>
+    <película categoría="acción">
+           <título idioma="inglés">Mad Max</título>
+            <director>George Miller</director>
+            <estreno>15 mayo 2015</estreno>
+            <reparto>Charlize Theron</reparto>
+     </película>
+     <película categoría="animación">
+            <título idioma="inglés">Inside Out</título>
+       	<reparto>Amy Poehler</reparto>
+</película>
+ </cine>

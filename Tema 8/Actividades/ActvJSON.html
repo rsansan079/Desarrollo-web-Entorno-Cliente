@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        .jumbotron {
+
+            max-height: 180px;
+        }
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- css bootstrap 533 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- bootstrap icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1><img src="https://cdn.pixabay.com/photo/2016/01/16/08/04/aperture-1142967_1280.png" height="30px"
+                width="30px">
+            De Todo ...</h1>
+        <h5>Carrito de la compra ...</h5>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div id="contProductos" class="row"></div>
+            </div>
+            <div class="col-md-4">
+                <h3><img src="https://cdn.pixabay.com/photo/2013/07/12/17/22/basket-152089_1280.png " height="15%"
+                        width="15%">Cesta</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Cod.</th>
+                            <th>Nombre</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cesta"></tbody>
+                </table>
+                <p id="total">Total: 0.00 €</p>
+                <p id="totalIVA">Total + IVA (21%): 0.00 €</p>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        class Producto {
+
+
+            constructor(id, nombre, precio, imagen) {
+
+                this.id = id;
+                this.nombre = nombre;
+                this.precio = precio;
+                this.imagen = imagen;
+            }
+
+        }
+        class ContProductos {
+
+            #productosDisp = [];
+
+            constructor(arrayProductos) {
+
+                // Transformamos los productos en un array de obj
+
+                this.#productosDisp = arrayProductos.map(
+                    ([codigo, nombre, precio, imagen]) =>
+                        new Producto(codigo, nombre, precio, imagen)
+
+                );
+            }
+            obtenerProductoPorid(id) {
+                // Devuelve el producto con el id
+                return this.#productosDisp.find(producto => producto.id === id);
+            }
+
+          
+            renderizarProductos() {
+
+const contenedor = document.getElementById('contProductos');
+contenedor.innerHTML = ''; // Limpiar contenido previo
+
+this.#productosDisp.forEach(producto => {
+    // Crear col
+    const col = document.createElement('div');
+    col.className = 'col-md-4 mb-4';
+
+    // Crear tarjeta
+    const tarjeta = document.createElement('div');
+    tarjeta.className = 'card';
+
+    // Crear imagen
+    const imagen = document.createElement('img');
+    imagen.className = 'card-img-top';
+    imagen.src = producto.imagen;
+    imagen.alt = producto.nombre;
+
+    // Crear cuerpo de la tarjeta
+    const cuerpoTarjeta = document.createElement('div');
+    cuerpoTarjeta.className = 'card-body';
+
+    // Crear título
+    const titulo = document.createElement('h5');
+    titulo.className = 'card-title';
+    titulo.textContent = producto.nombre;
+
+    // Crear texto del precio
+    const textoPrecio = document.createElement('p');
+    textoPrecio.className = 'card-text';
+    textoPrecio.textContent = `Precio: ${producto.precio.toFixed(2)} €`;
+
+
+    const inputCantidad = document.createElement('input');
+    inputCantidad.type = 'number';
+    inputCantidad.value = 1;
+    inputCantidad.min = 1;
+    inputCantidad.className = 'form-control mb-2';
+    inputCantidad.id = `cantidad-${producto.id}`;
+
+    const button = document.createElement('button');
+    button.className = 'btn btn-primary';
+    button.textContent = 'Añadir';
+    button.onclick = () => {
+        const cantidad = parseInt(document.getElementById(`cantidad-${producto.id}`).value);
+        if (cantidad > 0) {
+            app.cesta.añadirProducto(producto.id, cantidad);
+        }
+    };
+
+
+
+
+    cuerpoTarjeta.appendChild(titulo);
+    cuerpoTarjeta.appendChild(textoPrecio);
+    cuerpoTarjeta.appendChild(inputCantidad);
+    cuerpoTarjeta.appendChild(button);
+    tarjeta.appendChild(imagen);
+    tarjeta.appendChild(cuerpoTarjeta);
+    col.appendChild(tarjeta);
+
+
+
+    contenedor.appendChild(col);
+
+
+});
+
+
+}
+}
+
+
+        class Cesta {
+
+            #productosCesta = [];
+
+            constructor(){
+
+                this.recuperarEstado();
+            }
+
+            añadirProducto(id, cantidad) {
+                // Busca el producto completo desde ContProductos
+
+                const producto = app.contProductos.obtenerProductoPorid(id);
+                if (!producto) return;
+
+                const existente = this.#productosCesta.find(p => p.id === producto.id);
+                if (existente) {
+                    existente.cantidad += cantidad;
+                } else {
+                    this.#productosCesta.push({
+                        id: producto.id,
+                        nombre: producto.nombre,
+                        precio: producto.precio,
+                        cantidad
+                    });
+                }
+                this.actualizarCesta();
+            }
+
+            eliminarProducto(id) {
+                this.#productosCesta = this.#productosCesta.filter(p => p.id !== id);
+                this.actualizarCesta();
+            }
+
+
+
+            
+            guardarEstado() {
+
+                var cadenaJSON = JSON.stringify(this.#productosCesta);
+                localStorage.setItem("datos", cadenaJSON);
+
+            }
+
+
+
+            
+
+            renderizarCesta() {
+                // Calcula los totales y renderiza la cesta
+
+
+                let total = 0;
+                const contenedor = document.getElementById('cesta');
+                contenedor.innerHTML = '';
+                this.#productosCesta.forEach(({ id, cantidad }) => {
+                    const producto = app.contProductos.obtenerProductoPorid(id);
+                    if (producto) {
+                        const subtotal = producto.precio * cantidad;
+                        total += subtotal;
+
+                        // Fila de producto en la cesta
+
+                        // Crear una fila de producto en la cesta
+                        const fila = document.createElement('tr');
+
+                        // Crear celdas para cada columna
+                        const celdaId = document.createElement('td');
+                        celdaId.textContent = id;
+                        fila.appendChild(celdaId);
+
+                        const celdaNombre = document.createElement('td');
+                        celdaNombre.textContent = producto.nombre;
+                        fila.appendChild(celdaNombre);
+
+                        const celdaCantidad = document.createElement('td');
+                        celdaCantidad.textContent = cantidad;
+                        fila.appendChild(celdaCantidad);
+
+                        const celdaSubtotal = document.createElement('td');
+                        celdaSubtotal.textContent = `${subtotal.toFixed(2)} €`;
+                        fila.appendChild(celdaSubtotal);
+
+                        // Crear botón de eliminar
+                        const celdaEliminar = document.createElement('td');
+                        const botonEliminar = document.createElement('button');
+                        botonEliminar.className = 'btn btn-danger btn-sm';
+                        botonEliminar.textContent = 'Eliminar';
+
+
+                        botonEliminar.addEventListener('click', () => {
+                            app.cesta.eliminarProducto(id);
+                        });
+
+
+                        celdaEliminar.appendChild(botonEliminar);
+                        fila.appendChild(celdaEliminar);
+                        contenedor.appendChild(fila);
+
+                    }
+
+                });
+
+                // Calcula totales con y sin IVA
+
+
+                const totalIVA = total * 1.21;
+                document.getElementById('total').textContent = `Total: ${total.toFixed(2)} €`;
+                document.getElementById('totalIVA').textContent = `Total + IVA (21%): ${totalIVA.toFixed(2)} €`;
+        
+                this.guardarEstado();
+            }
+
+                // Calcula totales con y sin IVA
+
+
+            actualizarCesta() {
+                this.guardarEstado();
+                this.recuperarEstado();
+                this.renderizarCesta();
+            }
+
+            recuperarEstado() {
+             const cadenaJSON = localStorage.getItem("datos");
+             this.#productosCesta = cadenaJSON ? JSON.parse(cadenaJSON) : []; // Si no hay datos, inicializa como un array vacío
+            }
+        }
+
+
+
+        class App {
+            constructor() {
+
+                let arrayProductos = [
+                    ['001', 'Bolso', 20, 'https://cdn.pixabay.com/photo/2013/07/12/17/39/handbag-152158_1280.png'],
+                    ['002', 'Zapatos', 45, 'https://cdn.pixabay.com/photo/2013/07/12/18/20/shoes-153310_1280.png'],
+                    ['003', 'Camiseta', 15, 'https://cdn.pixabay.com/photo/2013/07/12/18/22/t-shirt-153370_1280.png'],
+                    ['004', 'Sombrero', 12, 'https://cdn.pixabay.com/photo/2013/07/13/10/41/hat-157581_1280.png'],
+                    ['005', 'Bufanda', 8, 'https://cdn.pixabay.com/photo/2021/04/27/18/36/scarf-6212163_1280.png']
+                ];
+
+                // Inicializa los productos y la cesta
+                this.contProductos = new ContProductos(arrayProductos);
+                this.cesta = new Cesta();
+                // Renderiza los productos en la página
+                this.contProductos.renderizarProductos();
+                
+
+            }
+        }
+
+
+
+
+
+        const app = new App();
+
+    </script>
+</body>
+
+</html>
