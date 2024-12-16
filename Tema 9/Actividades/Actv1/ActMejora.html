@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+    </style>
+    <script>
+        function funAjax(url, fun) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    fun(this);
+                }
+            }
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
+
+        function seleccionLista(xhttp) {
+            let obj = JSON.parse(xhttp.responseText);
+            var lista = document.getElementById("sel");
+            var seleccion = "<option disabled selected>Selecciona un Cliente</option>";
+
+            for (var datos of obj) {
+
+                seleccion += `<option value="${datos.id}">${datos.nombre}</option>`;
+            }
+            lista.innerHTML += seleccion;
+
+            lista.addEventListener("change", function () {
+
+                funAjax(`Actv1.php?id=${this.value};`, mostrarTabla);
+            });
+
+        }
+
+
+        function mostrarTabla(xhttp) {
+            let obj = JSON.parse(xhttp.responseText);
+            let tabla = document.getElementById("tabla");
+            tabla.innerHTML = "";
+
+            if (obj.length > 0) {
+
+               // ID
+    let filaID = document.createElement("tr");
+    let thID = document.createElement("th");
+    thID.textContent = "ID";
+    let tdID = document.createElement("td");
+    tdID.textContent = obj[0].id;
+    filaID.appendChild(thID);
+    filaID.appendChild(tdID);
+    tabla.appendChild(filaID);
+
+    // Nombre
+    let filaNombre = document.createElement("tr");
+    let thNombre = document.createElement("th");
+    thNombre.textContent = "Nombre";
+    let tdNombre = document.createElement("td");
+    tdNombre.textContent = obj[0].nombre;
+    filaNombre.appendChild(thNombre);
+    filaNombre.appendChild(tdNombre);
+    tabla.appendChild(filaNombre);
+
+    // Apellidos
+    let filaApellidos = document.createElement("tr");
+    let thApellidos = document.createElement("th");
+    thApellidos.textContent = "Apellidos";
+    let tdApellidos = document.createElement("td");
+    tdApellidos.textContent = obj[0].apellidos;
+    filaApellidos.appendChild(thApellidos);
+    filaApellidos.appendChild(tdApellidos);
+    tabla.appendChild(filaApellidos);
+
+    // Ciudad
+    let filaCiudad = document.createElement("tr");
+    let thCiudad = document.createElement("th");
+    thCiudad.textContent = "Ciudad";
+    let tdCiudad = document.createElement("td");
+    tdCiudad.textContent = obj[0].ciudad;
+    filaCiudad.appendChild(thCiudad);
+    filaCiudad.appendChild(tdCiudad);
+    tabla.appendChild(filaCiudad);
+
+            } else {
+                tabla.innerHTML = "<tr><td>No hay datos </td></tr>";
+            }
+        }
+
+
+        window.onload = function () {
+
+            funAjax("Actv1.php", seleccionLista);
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <h2>Gestión de Registros</h2>
+    <form action="">
+        <select id='sel'></select>
+    </form>
+    <br>
+    <table id="tabla">
+        <tr>
+            <td>La tabla se cargará aqui....</td>
+        </tr>
+    </table>
+</body>
+
+</html>
