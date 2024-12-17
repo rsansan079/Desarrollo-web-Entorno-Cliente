@@ -1,83 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
+    <meta charset="UTF-8" />
+    <title>Gestor de Fútbol</title>
     <script>
-      function entrada() {
-        // Declaro el array bidimensional
-        var dependencias = [];
-        // Declaro el array vacío que actuará como zona
-        var consumos = [];
-        // Declaro el valor de entrada
-        var entrada = String;
-        var indiceDependencia = 0;
-
-        while (entrada != null) {
-          entrada = prompt(
-            "Introduce los valores de consumo de la dependencia " +
-              indiceDependencia +
-              "  \nPara pasar a la siguiente dependencia, introduzca c \nPara separar entre pares e impares pulse f"
-          );
-
-          if (entrada == null) {
-            alert("Has finalizado el programa");
-          } else if (entrada == "c") {
-            // Mandamos los datos de la zona al array bidimensional
-            consumos.sort(function (a,b){return a-b}) ;
-            dependencias.push(consumos);
-            indiceDependencia = indiceDependencia + 1;
-            
-            // Reiniciamos la variable para empezar una nueva zona
-            var consumos = [];
-          } else if (entrada == "f") {
-            consumos.sort(function (a,b){return a-b}) ;
-            dependencias.push(consumos);
-            // Separar los números pares de los impares
-            maximo(dependencias);
-            mayorQueDos(dependencias);
-
-            break;
-          } else {
-            consumos.push(entrada);
+      // Crear función AJAX
+      function funAjax(url, fun) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            fun(this);
+          } else if (this.readyState == 4) {
+            console.error("Error en la solicitud AJAX: ", this.status);
           }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+      }
+
+      // Cargar lista de equipos
+      function cargarEquipos(xhttp) {
+        let equipos = JSON.parse(xhttp.responseText);
+        var lista = document.getElementById("listaEquipos");
+        var opciones = "<option disabled selected>Selecciona un equipo</option>";
+
+        equipos.forEach(equipo => {
+          opciones += `<option value="${equipo.id_equipo}">${equipo.nombre}</option>`;
+        });
+        lista.innerHTML = opciones;
+
+        lista.addEventListener("change", function () {
+          funAjax(`bd.php?accion=jugador_unico&id_equipo=${this.value}`, cargarJugadorUnico);
+        });
+      }
+
+      // Cargar un solo jugador del equipo seleccionado
+      function cargarJugadorUnico(xhttp) {
+        let jugador = JSON.parse(xhttp.responseText);
+        let tabla = document.getElementById("tablaJugadores");
+        tabla.innerHTML = "";
+
+        if (jugador) {
+          var contenido = `
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Apellidos</th>
+              <th>Edad</th>
+              <th>Posición</th>
+              <th>Nacionalidad</th>
+            </tr>
+            <tr>
+              <td>${jugador.id_jugador}</td>
+              <td>${jugador.nombre}</td>
+              <td>${jugador.apellidos}</td>
+              <td>${jugador.edad}</td>
+              <td>${jugador.posicion}</td>
+              <td>${jugador.nacionalidad}</td>
+            </tr>`;
+          tabla.innerHTML = contenido;
+        } else {
+          tabla.innerHTML = "<tr><td colspan='6'>No se encontró un jugador para este equipo.</td></tr>";
         }
       }
 
-      function maximo(array) {
-        var max = Number(array[0][0]);
-        var maximos = [];
-
-        for (var i = 0; i < array.length; i++) {
-          for (var j = 0; j < array[i].length; j++) {
-            if (Number(array[i][j]) > max) {
-              max = Number(array[i][j]);
-            }
-          }
-          var maxMensaje = "Dependencia " + i + ": " + max + " kWh"; 
-          maximos.push(maxMensaje);
-          max = Number(array[0][0]);
-        }
-        
-          alert("Los máximos son: " + maximos);
-      }
-
-      function mayorQueDos(array){
-        var mayores = [];
-
-        for (var i = 0; i < array.length; i++) {
-          for (var j = 0; j < array[i].length; j++) {
-            if (Number(array[i][j]) > 2) {
-              mayor = "Dependencia " + i;
-            }else{
-                mayor = "";
-            }
-          }
-          mayores.push(mayor);
-        }
-
-        alert("Las dependencias con consumos mayores a 2kWh son: " + mayores);
-
-      }
+      // Cargar lista de equipos al cargar la página
+      window.onload = function () {
+        funAjax("bd.php?accion=equipos", cargarEquipos);
+      };
     </script>
   </head>
-  <body onload="entrada();"></body>
+  <body>
+    <h2>Gestor de Equipos de Fútbol</h2>
+    <label for="listaEquipos">Selecciona un equipo:</label>
+    <select id="listaEquipos"></select>
+    <br /><br />
+    <table id="tablaJugadores" border="1">
+      <tr><td>La tabla se cargará aquí...</td></tr>
+    </table>
+  </body>
 </html>
